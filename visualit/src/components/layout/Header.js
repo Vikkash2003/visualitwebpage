@@ -2,16 +2,15 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion';
-import ThemeToggle from '../common/ThemeToggle'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(null)
+  const router = useRouter()
   const pathname = usePathname()
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,19 +20,35 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Add this function right after the useEffect
   const handleNavClick = (e, targetId) => {
     e.preventDefault()
     const element = document.querySelector(targetId)
     if (element) {
       const offsetTop = element.offsetTop
       window.scrollTo({
-        top: offsetTop - 80, // Adjust for header height
+        top: offsetTop - 80,
         behavior: 'smooth'
       })
-      setIsMobileMenuOpen(false) // Close mobile menu after clicking
+      setIsMobileMenuOpen(false)
     }
   }
+
+  // Add this missing function
+  const handleJoinUsClick = (e) => {
+    e?.preventDefault?.();
+    const element = document.querySelector('#footer');
+    if (element) {
+      const offsetTop = element.offsetTop;
+      window.scrollTo({
+        top: offsetTop - 80,
+        behavior: 'smooth'
+      });
+      setIsMobileMenuOpen(false);
+      setTimeout(() => {
+        if (window.highlightFooterEmail) window.highlightFooterEmail();
+      }, 500); // Wait for scroll to finish
+    }
+  };
 
   const headerVariants = {
     top: {
@@ -64,7 +79,6 @@ export default function Header() {
       >
         <nav className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <Link href="/" className="flex items-center space-x-3 group">
               <div className="relative w-8 h-8">
                 <Image
@@ -79,7 +93,6 @@ export default function Header() {
               <h1 className="text-xl font-semibold text-white">VisualIT</h1>
             </Link>
 
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <a href="#home"
                  onClick={(e) => handleNavClick(e, '#home')}
@@ -103,18 +116,7 @@ export default function Header() {
               </a>
             </div>
 
-            {/* Right side items */}
             <div className="hidden md:flex items-center space-x-4">
-              <ThemeToggle/>
-              <button
-                  className="bg-[#0CF2A0] text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors">
-                Get Started
-              </button>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-4">
-              <ThemeToggle/>
               <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="text-gray-400 hover:text-white"
@@ -132,7 +134,6 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Mobile menu */}
           <AnimatePresence>
             {isMobileMenuOpen && (
                 <motion.div
@@ -163,8 +164,10 @@ export default function Header() {
                        className="text-sm text-gray-400 hover:text-white">
                       Contact
                     </a>
-                    <button className="bg-[#0CF2A0] text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors">
-                      Get Started
+                    <button
+                        onClick={handleJoinUsClick}
+                        className="bg-[#0CF2A0] text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors text-left">
+                      Join Us
                     </button>
                   </div>
                 </motion.div>
