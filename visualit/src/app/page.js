@@ -7,17 +7,12 @@ import TargetAudienceSection from '../components/sections/TargetAudienceSection'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import PremiumPricing from "../components/sections/PremiumPricing";
-import SplashScreen from "@/src/components/sections/SplashScreen";
 import TestimonialDemo from "@/src/components/sections/Testamonials";
 
 export default function HomePage() {
     const [showSplash, setShowSplash] = useState(true);
 
     return (
-        <>
-            {showSplash ? (
-                <SplashScreen onFinish={() => setShowSplash(false)} />
-            ) : (
                 <>
                     <Header />
                     <main className="overflow-hidden">
@@ -29,7 +24,6 @@ export default function HomePage() {
                     </main>
                     <Footer />
                 </>
-            )}
-        </>
+
     );
 }
