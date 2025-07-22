@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, useInView , AnimatePresence} from "framer-motion";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 import { Brain, BrainCog } from "lucide-react";
 
 const Features = ({ features }) => {
@@ -14,14 +14,18 @@ const Features = ({ features }) => {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   const headerInView = useInView(headerRef, { once: true, margin: "-100px" });
   const featuresInView = useInView(containerRef, { once: true, margin: "-50px" });
 
+  // This parallax transform for the image is fine and can stay.
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
+  // --- REMOVED ---
+  // The opacity transform was causing the issue. We will rely on useInView for animations.
+  // const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,16 +63,16 @@ const Features = ({ features }) => {
   };
 
   return (
+      // --- CHANGED: Removed the style={{ opacity }} property ---
       <motion.div
           ref={sectionRef}
           id="features"
           className="min-h-screen py-16 px-4 bg-[#080808]"
-          style={{ opacity }}
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
               ref={headerRef}
-              className="text-center mb-16 fade-in"
+              className="text-center mb-16" // Removed fade-in class, letting framer-motion handle it
               initial={{ opacity: 0, y: 50 }}
               animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -82,7 +86,7 @@ const Features = ({ features }) => {
               AI Mentors. Real Results.
             </motion.span>
             <motion.h2
-                className="text-4xl md:text-5xl font-bold text-foreground mt-4 mb-6"
+                className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6" // text-foreground changed to text-white for contrast
                 initial={{ opacity: 0, y: 30 }}
                 animate={headerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -94,10 +98,10 @@ const Features = ({ features }) => {
           <div className="grid lg:grid-cols-2 lg:gap-16 gap-8 items-center">
             <motion.div
                 ref={containerRef}
-                className="lg:space-y-8 md:space-x-6 lg:space-x-0 overflow-x-auto overflow-hidden no-scrollbar lg:overflow-visible flex lg:flex lg:flex-col flex-row order-1 pb-4 scroll-smooth fade-in-left"
-                initial={{opacity: 0, x: -50}}
-                animate={featuresInView ? {opacity: 1, x: 0} : {opacity: 0, x: -50}}
-                transition={{duration: 0.8, delay: 0.3}}
+                className="lg:space-y-8 md:space-x-6 lg:space-x-0 overflow-x-auto lg:overflow-visible no-scrollbar flex lg:flex-col flex-row order-1 pb-4 scroll-smooth"
+                initial={{ opacity: 0, x: -50 }}
+                animate={featuresInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
             >
               {features.map((feature, index) => {
                 const Icon = feature.icon;
@@ -111,43 +115,47 @@ const Features = ({ features }) => {
                         }}
                         className="relative cursor-pointer flex-shrink-0"
                         onClick={() => handleFeatureClick(index)}
-                        initial={{opacity: 0, y: 30}}
-                        animate={featuresInView ? {opacity: 1, y: 0} : {opacity: 0, y: 30}}
-                        transition={{duration: 0.6, delay: 0.5 + index * 0.1}}
-                        whileHover={{scale: 1.02}}
-                        whileTap={{scale: 0.98}}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                        transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                     >
-                      <div className={`
-                    flex lg:flex-row flex-col items-start space-x-4 p-3 max-w-sm md:max-w-sm lg:max-w-2xl transition-all duration-300
-                    ${isActive ? "bg-background border border-border rounded-xl shadow-lg" : ""}
-                  `}>
-                        <div className={`
-                      p-3 hidden md:block rounded-full transition-all duration-300
-                      ${isActive ? "bg-green-500 text-white" : "bg-green-500/10 text-green-500"}
-                    `}>
-                          <Icon size={24}/>
+                      <div
+                          className={`flex lg:flex-row flex-col items-start lg:items-center space-x-4 p-3 max-w-sm md:max-w-sm lg:max-w-2xl transition-all duration-300 ${
+                              isActive ? "bg-black/30 border border-gray-700 rounded-xl shadow-lg" : ""
+                          }`}
+                      >
+                        <div
+                            className={`p-3 hidden md:block rounded-full transition-all duration-300 ${
+                                isActive ? "bg-green-500 text-white" : "bg-green-500/10 text-green-500"
+                            }`}
+                        >
+                          <Icon size={24} />
                         </div>
 
                         <div className="flex-1">
-                          <h3 className={`
-                        text-lg md:mt-4 lg:mt-0 font-semibold mb-2 transition-colors duration-300
-                        ${isActive ? "text-foreground" : "text-muted-foreground"}
-                      `}>
+                          <h3
+                              className={`text-lg lg:mt-0 font-semibold mb-2 transition-colors duration-300 ${
+                                  isActive ? "text-white" : "text-gray-400"
+                              }`}
+                          >
                             {feature.title}
                           </h3>
-                          <p className={`
-                        transition-colors duration-300 text-sm
-                        ${isActive ? "text-muted-foreground" : "text-muted-foreground/60"}
-                      `}>
+                          <p
+                              className={`transition-colors duration-300 text-sm ${
+                                  isActive ? "text-gray-400" : "text-gray-500"
+                              }`}
+                          >
                             {feature.description}
                           </p>
-                          <div className="mt-4 bg-muted rounded-sm h-1 overflow-hidden">
+                          <div className="mt-4 bg-gray-800 rounded-sm h-1 overflow-hidden">
                             {isActive && (
                                 <motion.div
                                     className="h-full bg-gradient-to-r from-green-400 to-green-500"
-                                    initial={{width: 0}}
-                                    animate={{width: `${progress}%`}}
-                                    transition={{duration: 0.1, ease: "linear"}}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${progress}%` }}
+                                    transition={{ duration: 0.1, ease: "linear" }}
                                 />
                             )}
                           </div>
@@ -159,36 +167,36 @@ const Features = ({ features }) => {
             </motion.div>
 
             <motion.div
-                className="relative order-1 max-w-lg mx-auto lg:order-2 fade-in-right"
-                initial={{opacity: 0, x: 50}}
-                animate={featuresInView ? {opacity: 1, x: 0} : {opacity: 0, x: -50}}
-                transition={{duration: 0.8, delay: 0.4}}
-                style={{y}}
+                className="relative order-1 max-w-lg mx-auto lg:order-2"
+                initial={{ opacity: 0, x: 50 }}
+                animate={featuresInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                style={{ y }} // Parallax effect on the image
             >
               <AnimatePresence mode="wait">
                 <motion.div
                     key={currentFeature}
-                    initial={{opacity: 0, x: 20}}
-                    animate={{opacity: 1, x: 0}}
-                    exit={{opacity: 0, x: -20}}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
                     transition={{
                       type: "spring",
                       stiffness: 200,
                       damping: 30,
-                      duration: 0.5
+                      duration: 0.5,
                     }}
                     className="relative"
-                    whileHover={{scale: 1.05}}
+                    whileHover={{ scale: 1.05 }}
                 >
                   <motion.img
-                      className="rounded-2xl border border-border shadow-lg"
+                      className="rounded-2xl border border-gray-700 shadow-lg"
                       src={features[currentFeature].image}
                       alt={features[currentFeature].title}
                       width={600}
                       height={400}
-                      initial={{opacity: 0}}
-                      animate={{opacity: 1}}
-                      transition={{duration: 0.3}}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
                       loading="eager"
                   />
                 </motion.div>
@@ -206,7 +214,7 @@ const features = [
     icon: BrainCog,
     title: "Visualize Characters",
     description: "Real-time visual rendering of characters, scenes, and entire book worlds powered by advanced AI.",
-    image: "visualize.png",
+    image: "/visualize.png",
   },
   {
     id: 2,
@@ -225,7 +233,7 @@ const features = [
 ];
 
 const DemoOne = () => {
-  return <Features features={features}/>;
+  return <Features features={features} />;
 };
 
 export default DemoOne;

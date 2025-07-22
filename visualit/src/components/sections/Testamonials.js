@@ -82,7 +82,7 @@ const CarouselPrevious = React.forwardRef(({ className, ...props }, ref) => {
             ref={ref}
             onClick={scrollPrev}
             disabled={!canScrollPrev}
-            className={`absolute h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 ${orientation === "horizontal" ? "-left-12 top-1/2 -translate-y-1/2" : "-top-12 left-1/2 -translate-x-1/2 rotate-90"} ${className || ""}`}
+            className={`absolute h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 disabled:opacity-50 ${orientation === "horizontal" ? "-left-12 top-1/2 -translate-y-1/2" : "-top-12 left-1/2 -translate-x-1/2 rotate-90"} ${className || ""}`}
             {...props}
         >
             <ArrowLeft className="h-4 w-4" />
@@ -91,7 +91,6 @@ const CarouselPrevious = React.forwardRef(({ className, ...props }, ref) => {
     )
 })
 
-
 const CarouselNext = React.forwardRef(({ className, ...props }, ref) => {
     const { orientation, scrollNext, canScrollNext } = useCarousel()
     return (
@@ -99,7 +98,7 @@ const CarouselNext = React.forwardRef(({ className, ...props }, ref) => {
             ref={ref}
             onClick={scrollNext}
             disabled={!canScrollNext}
-            className={`absolute h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 ${orientation === "horizontal" ? "-right-12 top-1/2 -translate-y-1/2" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90"} ${className || ""}`}
+            className={`absolute h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 disabled:opacity-50 ${orientation === "horizontal" ? "-right-12 top-1/2 -translate-y-1/2" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90"} ${className || ""}`}
             {...props}
         >
             <ArrowRight className="h-4 w-4" />
@@ -108,32 +107,90 @@ const CarouselNext = React.forwardRef(({ className, ...props }, ref) => {
     )
 })
 
+// --- NEW: TestimonialCard component with "Read More" functionality ---
+const TestimonialCard = ({ testimonial }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const TRUNCATE_LIMIT = 150;
+    const isTruncatable = testimonial.content.length > TRUNCATE_LIMIT;
+
+    const toggleExpanded = () => {
+        setIsExpanded(!isExpanded);
+    };
+
+    const displayText = isExpanded || !isTruncatable
+        ? testimonial.content
+        : `${testimonial.content.substring(0, TRUNCATE_LIMIT)}...`;
+
+    return (
+        <Card className="h-full border-2 border-transparent bg-muted/50 transition-colors duration-300 hover:border-primary/40">
+            <div className="p-6 h-full flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                {/* Avatar and user info */}
+                <div className="flex flex-row sm:flex-col items-center gap-4 sm:gap-0 w-full sm:w-auto sm:min-w-[100px]">
+                    <div className="w-16 h-16 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-primary/40 flex-shrink-0">
+                        {testimonial.avatar ? (
+                            <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover" />
+                        ) : (
+                            <span className="w-full h-full flex items-center justify-center text-primary font-semibold text-lg">{testimonial.name.charAt(0)}</span>
+                        )}
+                    </div>
+                    <div className="sm:mt-2 text-left sm:text-center">
+                        <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
+                        <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                </div>
+
+                {/* Testimonial content */}
+                <div className="flex-1 relative border-t-2 sm:border-t-0 sm:border-l-2 border-border/20 pt-4 sm:pt-0 sm:pl-6 w-full sm:w-auto">
+                    <Quote className="absolute -top-1 left-0 sm:top-0 sm:-left-4 h-8 w-8 text-muted-foreground/20" />
+                    <p className="text-muted-foreground leading-relaxed text-sm">
+                        {displayText}
+                        {isTruncatable && (
+                            <button onClick={toggleExpanded} className="text-primary font-semibold ml-2 hover:underline">
+                                {isExpanded ? 'Read Less' : 'Read More'}
+                            </button>
+                        )}
+                    </p>
+                </div>
+            </div>
+        </Card>
+    );
+};
+
+
 const defaultTestimonials = [
-    { id: 1, name: "Sarah Johnson", role: "Product Manager", company: "TechCorp", content: "This product has completely transformed our workflow.", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face" },
-    { id: 2, name: "Michael Chen", role: "Software Engineer", company: "StartupXYZ", content: "Outstanding performance and reliability.", avatar: "https://images.unsplash.com/photo-1507003211169-0a6dd7228f2d?w=150&h=150&fit=crop&crop=face" },
-    { id: 3, name: "Emily Rodriguez", role: "Design Lead", company: "Creative Agency", content: "The attention to detail is impressive.", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" },
-]
+    { id: 1, name: "Yohan Liyanage", role: "CEO of Altrium", company: "Altrium", content: "It was truly inspiring to see the incredible work your team has done. I especially loved how you’ve creatively used technology - voice models and AI-generated visuals - to reimagine how stories can be experienced. In a time when digital distractions are pulling people away from reading, it’s refreshing to see an innovation that brings books back to life in such an engaging, accessible way. Keep pushing boundaries!", avatar: "/testimonial_1.jpg" },
+    { id: 2, name: "Jane Doe", role: "Lead Developer, Innovate Inc.", company: "Innovate Inc.", content: "An absolutely essential tool for our team. The performance is top-notch and the user interface is incredibly intuitive. It has streamlined our processes and saved us countless hours of work. We couldn't be happier with the results.", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face" },
+];
 
 export default function TestimonialDemo() {
     const [api, setApi] = useState(null)
     const intervalRef = useRef(null)
 
+    // Autoplay logic
     useEffect(() => {
         if (!api) return
         const start = () => {
             intervalRef.current = setInterval(() => {
                 if (api.canScrollNext()) api.scrollNext()
                 else api.scrollTo(0)
-            }, 3000)
+            }, 5000) // Increased interval for better readability
         }
         const stop = () => clearInterval(intervalRef.current)
-        start()
+
+        api.on("pointerDown", stop);
+        api.on("select", () => {
+            stop();
+            start();
+        });
 
         const container = api.containerNode()
         if (container) {
             container.addEventListener("mouseenter", stop)
             container.addEventListener("mouseleave", start)
         }
+
+        start()
+
         return () => {
             stop()
             if (container) {
@@ -152,35 +209,13 @@ export default function TestimonialDemo() {
                     <motion.p className="text-lg text-muted-foreground max-w-2xl mx-auto">We're proud to be the choice of leading professionals. Discover why experts in the field trust our platform to drive innovation and deliver results.</motion.p>
                 </div>
 
-                <Carousel setApi={setApi} opts={{ align: "start", loop: true }} className="w-full max-w-6xl mx-auto">
-                    <CarouselContent className="-ml-2 md:-ml-4">
+                <Carousel setApi={setApi} opts={{ align: "start", loop: true }} className="w-full max-w-4xl mx-auto">
+                    <CarouselContent className="-ml-4">
                         {defaultTestimonials.map((testimonial) => (
-                            <CarouselItem key={testimonial.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                            <CarouselItem key={testimonial.id} className="pl-4 md:basis-full">
                                 <motion.div className="h-full">
-                                    {/* CHANGED: Background color, border, and hover effect */}
-                                    <Card className="h-full border-2 border-transparent bg-muted/50 transition-colors duration-300 hover:border-primary/40">
-                                        <div className="p-6 h-full flex flex-col">
-                                            {/* REMOVED: The div containing the star rating */}
-                                            <div className="relative mb-6 flex-1">
-                                                <Quote className="absolute -top-2 -left-2 h-8 w-8 text-muted-foreground/20" />
-                                                {/* CHANGED: Text color for the main content */}
-                                                <p className="text-muted-foreground leading-relaxed pl-6">{testimonial.content}</p>
-                                            </div>
-                                            <div className="flex items-center mt-auto pt-4 border-t border-border/20">
-                                                <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center mr-4">
-                                                    {testimonial.avatar ? (
-                                                        <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover" />
-                                                    ) : (
-                                                        <span className="text-primary font-semibold text-lg">{testimonial.name.charAt(0)}</span>
-                                                    )}
-                                                </div>
-                                                <div>
-                                                    <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
-                                                    <p className="text-sm text-muted-foreground">{testimonial.role} at {testimonial.company}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Card>
+                                    {/* --- CHANGED: Using the new TestimonialCard component --- */}
+                                    <TestimonialCard testimonial={testimonial} />
                                 </motion.div>
                             </CarouselItem>
                         ))}
@@ -194,16 +229,16 @@ export default function TestimonialDemo() {
                         <button
                             onClick={() => api?.scrollPrev()}
                             disabled={!api?.canScrollPrev()}
-                            className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300"
+                            className="h-10 w-10 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
                         >
-                            <ArrowLeft className="h-4 w-4" />
+                            <ArrowLeft className="h-5 w-5" />
                         </button>
                         <button
                             onClick={() => api?.scrollNext()}
                             disabled={!api?.canScrollNext()}
-                            className="h-8 w-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300"
+                            className="h-10 w-10 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
                         >
-                            <ArrowRight className="h-4 w-4" />
+                            <ArrowRight className="h-5 w-5" />
                         </button>
                     </div>
                 </div>

@@ -33,7 +33,6 @@ export default function Header() {
     }
   }
 
-  // Add this missing function
   const handleJoinUsClick = (e) => {
     e?.preventDefault?.();
     const element = document.querySelector('#footer');
@@ -93,6 +92,7 @@ export default function Header() {
               <h1 className="text-xl font-semibold text-white">VisualIT</h1>
             </Link>
 
+            {/* --- DESKTOP NAVIGATION --- */}
             <div className="hidden md:flex items-center space-x-8">
               <a href="#home"
                  onClick={(e) => handleNavClick(e, '#home')}
@@ -116,7 +116,17 @@ export default function Header() {
               </a>
             </div>
 
-            <div className="hidden md:flex items-center space-x-4">
+            {/* --- CHANGED: DESKTOP "JOIN US" BUTTON --- */}
+            <div className="hidden md:flex items-center">
+              <button
+                  onClick={handleJoinUsClick}
+                  className="bg-[#0CF2A0] text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors">
+                Join Us
+              </button>
+            </div>
+
+            {/* --- CHANGED: MOBILE MENU BUTTON (Hamburger) --- */}
+            <div className="md:hidden flex items-center">
               <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="text-gray-400 hover:text-white"
@@ -134,6 +144,7 @@ export default function Header() {
             </div>
           </div>
 
+          {/* --- MOBILE MENU DROPDOWN --- */}
           <AnimatePresence>
             {isMobileMenuOpen && (
                 <motion.div
@@ -144,26 +155,11 @@ export default function Header() {
                     className="md:hidden mt-4 pb-4"
                 >
                   <div className="flex flex-col space-y-4">
-                    <a href="#home"
-                       onClick={(e) => handleNavClick(e, '#home')}
-                       className="text-sm text-gray-400 hover:text-white">
-                      Home
-                    </a>
-                    <a href="#features"
-                       onClick={(e) => handleNavClick(e, '#features')}
-                       className="text-sm text-gray-400 hover:text-white">
-                      Features
-                    </a>
-                    <a href="#pricing"
-                       onClick={(e) => handleNavClick(e, '#pricing')}
-                       className="text-sm text-gray-400 hover:text-white">
-                      Pricing
-                    </a>
-                    <a href="#footer"
-                       onClick={(e) => handleNavClick(e, '#footer')}
-                       className="text-sm text-gray-400 hover:text-white">
-                      Contact
-                    </a>
+                    <a href="#home" onClick={(e) => handleNavClick(e, '#home')} className="text-sm text-gray-400 hover:text-white">Home</a>
+                    <a href="#features" onClick={(e) => handleNavClick(e, '#features')} className="text-sm text-gray-400 hover:text-white">Features</a>
+                    <a href="#pricing" onClick={(e) => handleNavClick(e, '#pricing')} className="text-sm text-gray-400 hover:text-white">Pricing</a>
+                    <a href="#footer" onClick={(e) => handleNavClick(e, '#footer')} className="text-sm text-gray-400 hover:text-white">Contact</a>
+                    {/* The "Join Us" button for mobile remains here */}
                     <button
                         onClick={handleJoinUsClick}
                         className="bg-[#0CF2A0] text-black px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors text-left">

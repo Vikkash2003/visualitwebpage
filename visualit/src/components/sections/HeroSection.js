@@ -1,11 +1,10 @@
 import MobileMockup from '../hooks/mobileMockup'
 import { Button } from '../ui/Button'
-
-import AnimatedDataFlowHero from "@/src/components/hooks/animatedBackground"; // Import the animated background
+import AnimatedDataFlowHero from "@/src/components/hooks/animatedBackground"
 
 export default function HeroSection() {
     return (
-        <section className="relative overflow-hidden" id={'home'}>
+        <section className="relative overflow-hidden bg-black" id={'home'}>
             {/* BACKGROUND ANIMATION */}
             <div className="absolute inset-0 bg-black">
                 <AnimatedDataFlowHero/>
