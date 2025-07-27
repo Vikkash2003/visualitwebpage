@@ -16,7 +16,7 @@ export default function MobileMockup() {
         >
             <div className="w-full h-full transform shadow-2xl rounded-[2rem] overflow-hidden border-[6px] border-black">
                 <Image
-                    src="/harry.jpg"
+                    src="/HomeScreen.jpg"
                     alt="Visualit App"
                     fill
                     className="object-cover"
