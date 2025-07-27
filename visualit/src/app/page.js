@@ -8,7 +8,6 @@ import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import PremiumPricing from "../components/sections/PremiumPricing";
 import SplashScreen from "@/src/components/sections/SplashScreen";
-import dynamic from "next/dynamic";
 
 export default function HomePage() {
     const [showSplash, setShowSplash] = useState(true);

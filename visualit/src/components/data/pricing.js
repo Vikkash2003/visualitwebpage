@@ -10,12 +10,13 @@ export const pricingPlans = [
     gradient: "from-green-500/20 to-emerald-500/20",
     borderGradient: "from-green-400 to-emerald-400",
     features: [
-      "Read EPUB files (basic viewer)",
-      "Basic AI Visualization (3 books/month)",
-      "Text-to-speech (standard voice, limited)",
-      "Cloud sync (1 device)",
-      "Local EPUB import",
-      "Access to Visualit Community (Read-only)"
+      "Unlimited EPUB uploads",
+      "Unlimited Audiobook Uploads",
+      "Basic AI Visualization (3 - 5)",
+      "Audiobook Generation (5 chapters/month)",
+      "Advance Dictionary",
+      "Offline reading mode",
+      "Neuro Diverse UI"
     ],
     highlight: false,
     badge: null
@@ -23,45 +24,25 @@ export const pricingPlans = [
   {
     name: "Professional",
     subtitle: "Most popular choice",
-    price: { monthly: 99, yearly: 990 },
+    price: { monthly: 6.99},
     description: "Advanced AI capabilities for growing teams",
     icon: Crown,
     gradient: "from-green-500/20 to-emerald-500/20",
     borderGradient: "from-green-400 to-emerald-400",
     features: [
       "Unlimited EPUB uploads",
-      "Full AI visualization",
-      "Advanced text-to-speech",
+      "Unlimited Audiobook Uploads",
+      "100 image generations/month",
+      "Advanced Audiobook",
       "Reading analytics & progress tracking",
       "Offline reading mode",
-      "Full Community Access",
-      "Team collaboration",
-      "API access"
+      "Advance Dictionary",
+      "Neuro Diverse UI"
+
     ],
     highlight: true,
     badge: "Most Popular"
   },
-  {
-    name: "Enterprise",
-    subtitle: "For large organizations",
-    price: { monthly: 299, yearly: 2990 },
-    description: "Enterprise-grade AI solutions with full control",
-    icon: Rocket,
-    gradient: "from-green-500/20 to-emerald-500/20",
-    borderGradient: "from-green-400 to-emerald-400",
-    features: [
-      "Multi-user support (10+ seats)",
-      "Admin dashboard for tracking usage",
-      "Private Community Channels",
-      "Advanced security",
-      "Unlimited Visualization",
-      "Early access to beta features",
-      "Full Access of Visualit"
-
-    ],
-    highlight: false,
-    badge: "Enterprise"
-  }
 ];
 
 export const additionalFeatures = [
