@@ -42,6 +42,7 @@ const pricingPlansData = [
     {
         name: "Professional",
         subtitle: "Most popular choice",
+
         price: { monthly: 6.99 },
         description: "Advanced AI capabilities for growing teams",
         icon: Crown,
