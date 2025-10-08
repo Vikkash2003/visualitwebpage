@@ -83,14 +83,14 @@ export default function Header() {
               <div className="relative w-8 h-8">
                 <Image
                     src="/AppLogo.png"
-                    alt="VisualIT Logo"
+                    alt="VisuaLit Logo"
                     width={32}
                     height={32}
                     className="object-contain"
                     priority
                 />
               </div>
-              <h1 className="text-xl font-semibold text-white">VisualIT</h1>
+              <h1 className="text-xl font-semibold text-white">VisuaLit</h1>
             </Link>
 
             <div className="hidden md:flex items-center space-x-8">

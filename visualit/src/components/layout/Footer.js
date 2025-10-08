@@ -11,6 +11,7 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 // Added X for the alert close button
 import { Facebook, Instagram, Linkedin, Send, X, AlertCircle, CheckCircle2 } from "lucide-react"
 import { Client, Databases, ID } from "appwrite"
+import Link from "next/link";
 
 function cn(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -403,7 +404,7 @@ function FooterSection() {
                             © 2024 Your Company. All rights reserved.
                         </p>
                         <nav className="flex gap-4 text-sm">
-                            <a href="#" className="transition-colors hover:text-primary">
+                            <a href="/privacy-policy" className="transition-colors hover:text-primary">
                                 Privacy Policy
                             </a>
                             <a href="#" className="transition-colors hover:text-primary">
